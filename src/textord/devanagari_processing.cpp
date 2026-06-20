@@ -24,10 +24,9 @@
 #include "devanagari_processing.h"
 
 #include "debugpixa.h"
+#include "image.h"     // for Image
 #include "statistc.h"
 #include "tordmain.h"
-
-#include <allheaders.h>
 
 namespace tesseract {
 
@@ -471,9 +470,12 @@ void PixelHistogram::ConstructVerticalCountHist(Image pix) {
   for (int i = 0; i < height; ++i) {
     l_uint32 *line = data + i * wpl;
     for (int j = 0; j < width; ++j) {
-      if (GET_DATA_BIT(line, j)) {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+      if (Image::getDataBit(line, j)) {
         ++(hist_[j]);
       }
+#pragma GCC diagnostic pop
     }
   }
 }
